@@ -1,18 +1,36 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use \App\Models\Encuentros;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::group([
+	'middleware' => 'cors',
+    'namespace' => 'Encuentros',
+    'prefix' => 'encuentros'
 
-Route::get('/', function () {
-    return view('welcome');
+], function () {
+
+	Route::get('/', function() {
+	    return Encuentros::all();
+	});
+    Route::get('/ver/{id}', function($id) {
+	    return Encuentros::find($id);
+	});
+
+    Route::post('/nuevo', 'EncuentrosController@createPost');
+
+});
+
+
+Route::group([
+	'middleware' => 'cors',
+    'namespace' => 'Auth',
+    'prefix' => 'auth'
+
+], function () {
+
+    Route::post('signin', 'SignInController');
+    Route::post('signout', 'SignOutController');
+    Route::get('my', 'MyController');
+
 });
